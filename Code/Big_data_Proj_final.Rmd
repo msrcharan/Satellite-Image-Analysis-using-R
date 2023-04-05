@@ -1,0 +1,149 @@
+---
+title: An R Markdown document converted from "D:/Downloads/Big_data_Proj_final.ipynb"
+output: html_document
+---
+
+```{python}
+!pip uninstall rpy2 -y
+```
+
+```{python}
+# import warnings
+# warnings.filterwarnings('ignore')
+```
+
+```{python}
+!pip install rpy2==3.0.0
+```
+
+```{python}
+
+%load_ext rpy2.ipython
+```
+
+```{python}
+import csv
+from PIL import Image
+import numpy as np
+
+
+img = Image.open("/content/drive/MyDrive/Dataset_/imgs/cyb2.jpg")
+p = np.array(img)
+
+with open('/content/drive/MyDrive/Dataset_/csv_files/'+'cyb2'+'.csv', 'w', newline='') as csvfile:
+    rgbwriter = csv.writer(csvfile)
+    for row in p:
+        for column in row:
+            rgbwriter.writerow(column)
+```
+
+```{r}
+data <- read.csv("/content/drive/MyDrive/Dataset_/csv_files/cyb2.csv")
+```
+
+```{r}
+head(data,n=10)
+```
+
+```{r}
+a = data[, c(1)]
+list1 <- c(a)
+b = data[, c(2)]
+list2 <- c(b)
+c = data[, c(3)]
+list3 <- c(c)
+list3[is.na(list3)] <- 1
+
+count = 0
+green=0
+# looping over the vector elements
+for (i in list3){
+    count= count + 1
+    if(list2[count]>list1[count] & list2[count]>list3[count] ){
+        green= green +1
+    }  
+}
+# print(green)
+# print(count)
+if(count!=0){
+  val=green/count
+  print(val*100)
+}
+
+count = 0
+blue=0
+# looping over the vector elements
+for (i in list3){
+    count= count + 1
+    if(list3[count]>list2[count] & list3[count]>list1[count] ){
+        blue= blue +1
+    }  
+}
+# print(blue)
+# print(count)
+if(count!=0){
+  val1=blue/count
+  print(val1*100)
+}
+```
+
+```{r}
+gv = val*0.22
+cat("Green Vegetation:", gv,"km^2")
+bv = val1*0.22
+cat("\n")
+cat("Blue Index:", bv,"km^2")
+```
+
+```{python}
+pip install raster
+```
+
+```{r}
+install.packages("raster",repos = "http://cran.us.r-project.org")
+install.packages("rgdal", repos = "http://cran.us.r-project.org")
+```
+
+```{r}
+library(raster)
+library(rgdal)
+lidar_dem <- raster(x = "/content/drive/MyDrive/Dataset_/imgs/aparna_2012.jpg")
+
+# plot raster data
+plot(lidar_dem,
+     main = "Digital Elevation Model")
+```
+
+```{r}
+hist(lidar_dem,
+     main = "Distribution of RGB values",
+     xlab = "Distributed Values", ylab = "Frequency",
+     col = "green")
+```
+
+```{python}
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+```{r}
+plot(x = list2,
+   xlab = "Frequency",
+   ylab = "Value",	 
+   main = "Frequency"
+)
+```
+
+```{python}
+# %%R
+# l<-c(list.files("/content/drive/MyDrive/Dataset_/imgs",full.names=FALSE))
+```
+
+```{python}
+# %%R
+# for(i in l){ 
+# z<-tools::file_path_sans_ext(l)
+# write.csv(z, file = '/content/drive/MyDrive/Dataset_/csv_files/store.csv')
+# }
+```
+
